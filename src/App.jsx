@@ -84,6 +84,8 @@ export default function App() {
     return g;
   }, [timeslots]);
 
+  const periodOrder = ["morning", "afternoon", "evening"];
+  
   return (
     <div className="page">
       <header className="header">
@@ -110,7 +112,9 @@ export default function App() {
               <div key={date} className="date-row">
                 <div className="date-label">{dayjs(date).format('ddd, D MMM YYYY')}</div>
                 <div className="periods">
-                  {grouped[date].map(ts => {
+                  {grouped[date]
+                    .sort((a, b) => periodOrder.indexOf(a.period) - periodOrder.indexOf(b.period))
+                    .map(ts => {
                     const match = matchForTimeslot(ts.id);
                     const isMine = !!myAvailByTimeslot[ts.id];
                     const locked = !!match;
